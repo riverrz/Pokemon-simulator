@@ -1,1 +1,1 @@
-# Pokemon simulator games
+# Pokemon simulator game
