@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import socketIOClient from "socket.io-client";
 import "./App.css";
 
 class App extends Component {
@@ -14,6 +15,21 @@ class App extends Component {
       this.growl
     ];
     this.playerMove = 0;
+    this.state = {
+      endPoint: "http://localhost:5000"
+    };
+  }
+  componentDidMount() {
+    const socket = socketIOClient(this.state.endPoint);
+    socket.on("connect", () => {
+      console.log("Connected to the server");
+      socket.emit("join", {
+        username: "Shivam"
+      });
+    });
+    socket.on("disconnect", () => {
+      console.log("Connection to the server lost!");
+    });
   }
   /* users moves */
   waterCannon = () => {
