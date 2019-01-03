@@ -1,28 +1,45 @@
 import React, { Component } from "react";
-// import socketIOClient from "socket.io-client";
+import socketIOClient from "socket.io-client";
 import Playground from "./containers/Playground/Playground";
 import "./App.css";
 
 class App extends Component {
-  state = {
-    endPoint: "http://localhost:5000",
-    plUsername: "", // should be fetched from the server
-    opUsername: "",
-    room: "",
-    start: false
-  };
-  // componentDidMount() {
-  //   const socket = socketIOClient(this.state.endPoint);
-  //   socket.on("connect", () => {
-  //     console.log("Connected to the server");
-  //     socket.emit("join", {
-  //       username: "Shivam"
-  //     });
-  //   });
-  //   socket.on("disconnect", () => {
-  //     console.log("Connection to the server lost!");
-  //   });
-  // }
+  constructor(props) {
+    super(props);
+    this.state = {
+      endPoint: "http://localhost:5000",
+      plUsername: "",
+      opUsername: "",
+      room: "",
+      start: false
+    }; // should be fetched from the server
+    this.socket = socketIOClient(this.state.endPoint);
+  }
+
+  componentDidMount() {
+    this.socket.on("connect", () => {
+      console.log("Connected to the server");
+    });
+    this.socket.on("disconnect", () => {
+      console.log("Connection to the server lost!");
+    });
+    this.socket.on("opponentJoined", data => {
+      this.setState(
+        {
+          opUsername: data.filter(
+            user => user.username !== this.state.plUsername
+          )[0],
+          start: true
+        },
+        () => {
+          console.log(this.state.opUsername);
+        }
+      );
+    });
+    this.socket.on("opponentLeft", () => {
+      console.log("Opponent left, u won!!");
+    });
+  }
   handleUsername = event => {
     this.setState({
       plUsername: String(event.target.value)
@@ -35,8 +52,9 @@ class App extends Component {
   };
   handleSubmit = event => {
     event.preventDefault();
-    this.setState({
-      start: true
+    this.socket.emit("join", {
+      username: this.state.plUsername,
+      room: this.state.room
     });
   };
   render() {
