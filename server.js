@@ -14,19 +14,30 @@ const Users = require("./utils/Users");
 
 io.on("connection", socket => {
   socket.on("join", async data => {
-    await Users.addUser(socket.id, data.username, data.room);
-    socket.join(data.room);
-    await Users.addUserInRoom(data.room, socket.id);
-    const playerList = await Users.getUsersByRoom(data.room);
-    if (playerList.length === 2) {
-      io.to(data.room).emit("opponentJoined", playerList);
+    try {
+      const usersInRoom = await Users.countUsers(data.room);
+      if (usersInRoom >= 2) {
+        socket.emit("exception", "Room is full");
+      } else {
+        await Users.addUser(socket.id, data.username, data.room); // shouldnt be able to add user by same username
+        await Users.addUserInRoom(data.room, socket.id);
+        socket.join(data.room);
+        const playerList = await Users.getUsersByRoom(data.room);
+        if (playerList.length === 2) {
+          io.to(data.room).emit("opponentJoined", playerList);
+        }
+      }
+    } catch (err) {
+      socket.emit("exception", "Some error occurred");
+      console.log(err);
     }
   });
   socket.on("disconnect", async () => {
-    console.log("User left");
-    const {room} = await Users.getUser(socket.id);
-    await Users.deleteRoom(room);
-    socket.broadcast.to(room).emit("opponentLeft");
+    const user = await Users.getUser(socket.id);
+    if (user && user.room) {
+      await Users.deleteRoom(user.room);
+      socket.broadcast.to(user.room).emit("opponentLeft");
+    }
   });
 });
 

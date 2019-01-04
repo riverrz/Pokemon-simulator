@@ -11,7 +11,9 @@ class App extends Component {
       plUsername: "",
       opUsername: "",
       room: "",
-      start: false
+      start: false,
+      error: false,
+      errorMessage: ""
     }; // should be fetched from the server
     this.socket = socketIOClient(this.state.endPoint);
   }
@@ -28,8 +30,7 @@ class App extends Component {
         {
           opUsername: data.filter(
             user => user.username !== this.state.plUsername
-          )[0],
-          start: true
+          )[0]
         },
         () => {
           console.log(this.state.opUsername);
@@ -38,6 +39,12 @@ class App extends Component {
     });
     this.socket.on("opponentLeft", () => {
       console.log("Opponent left, u won!!");
+    });
+    this.socket.on("exception", errorMessage => {
+      this.setState({
+        error: true,
+        errorMessage
+      });
     });
   }
   handleUsername = event => {
@@ -55,6 +62,9 @@ class App extends Component {
     this.socket.emit("join", {
       username: this.state.plUsername,
       room: this.state.room
+    });
+    this.setState({
+      start: true
     });
   };
   render() {
@@ -77,7 +87,9 @@ class App extends Component {
         </form>
       </div>
     );
-    if (this.state.start && this.state.opUsername) {
+    if (this.state.error) {
+      content = <p>{this.state.errorMessage}</p>;
+    } else if (this.state.start && this.state.opUsername) {
       content = <Playground username={this.state.username} />;
     } else if (this.state.start && !this.state.opUsername) {
       content = <p>Waiting for a player to join the match</p>;

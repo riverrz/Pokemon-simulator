@@ -36,37 +36,26 @@ async function deleteRoom(room) {
   await deleteKey(room);
 }
 
-// Find len of list
-function userCount(room) {
-  return new Promise((resolve, reject) => {
-    client.llen(room, function(err, length) {
-      if (err) {
-        return reject(err);
-      }
-      resolve(length);
-    });
-  });
-}
-async function checkUserCount(room) {
-  const length = await userCount(room);
-  if (length >= 2) {
-    return false;
-  }
-  return true;
-}
-
 // create a room using a list with socket ids
 async function addUserInRoom(room, id) {
-  const flag = await checkUserCount(room);
-  if (!flag) {
-    return Promise.reject("Room is full");
-  }
   return new Promise((resolve, reject) => {
     client.lpush(room, id, function(err, res) {
       if (err) {
+        console.log(err);
         return reject(err);
       }
       resolve(res);
+    });
+  });
+}
+
+function countUsers(room) {
+  return new Promise((resolve, reject) => {
+    client.llen(room, function(err, len) {
+      if (err) {
+        return reject(err);
+      }
+      resolve(len);
     });
   });
 }
@@ -104,5 +93,5 @@ module.exports = {
   addUserInRoom,
   getUsersByRoom,
   getUser,
-  userCount
+  countUsers
 };
