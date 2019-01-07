@@ -90,7 +90,9 @@ class App extends Component {
     if (this.state.error) {
       content = <p>{this.state.errorMessage}</p>;
     } else if (this.state.start && this.state.opUsername) {
-      content = <Playground username={this.state.username} />;
+      content = (
+        <Playground username={this.state.username} socket={this.socket} />
+      );
     } else if (this.state.start && !this.state.opUsername) {
       content = <p>Waiting for a player to join the match</p>;
     }

@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from "react";
 import "./Playground.css";
+import Opponent from "../Opponent/Opponent";
+import Player from "../Player/Player";
 
 class Playground extends Component {
   state = {};
@@ -7,52 +9,8 @@ class Playground extends Component {
     return (
       <Fragment>
         <div className="game">
-          <div className="opponent">
-            <div className="stats">
-              <div className="top">
-                <div className="pokeballs">
-                  <div className="pokeball" />
-                  <div className="pokeball" />
-                  <div className="pokeball" />
-                  <div className="pokeball" />
-                  <div className="pokeball" />
-                </div>
-                <div id="apHP" className="hp-count">
-                  100
-                </div>
-              </div>
-              <span className="name">Charizard</span>
-              <span className="level">86</span>
-            </div>
-            <img
-              className="pokemon"
-              src="http://play.pokemonshowdown.com/sprites/xyani/charizard-megax.gif"
-              alt="Pokemon"
-            />
-          </div>
-          <div className="player">
-            <div className="stats">
-              <div className="top">
-                <div className="pokeballs">
-                  <div className="pokeball" />
-                  <div className="pokeball" />
-                  <div className="pokeball" />
-                  <div className="pokeball" />
-                  <div className="pokeball" />
-                </div>
-                <div id="myHP" className="hp-count">
-                  100
-                </div>
-              </div>
-              <span className="name">Blastoise</span>
-              <span className="level">86</span>
-            </div>
-            <img
-              className="pokemon"
-              src="http://play.pokemonshowdown.com/sprites/xyani/blastoise-mega.gif"
-              alt="Pokemon"
-            />
-          </div>
+          <Opponent />
+          <Player />
         </div>
         <div className="box">
           <div id="message" className="message">
