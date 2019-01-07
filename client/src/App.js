@@ -11,8 +11,10 @@ class App extends Component {
       plUsername: "",
       opUsername: "",
       room: "",
-      start: false
-    }; // should be fetched from the server
+      start: false,
+      error: false,
+      errorMessage: ""
+    };
     this.socket = socketIOClient(this.state.endPoint);
   }
 
@@ -24,20 +26,20 @@ class App extends Component {
       console.log("Connection to the server lost!");
     });
     this.socket.on("opponentJoined", data => {
-      this.setState(
-        {
-          opUsername: data.filter(
-            user => user.username !== this.state.plUsername
-          )[0],
-          start: true
-        },
-        () => {
-          console.log(this.state.opUsername);
-        }
-      );
+      this.setState({
+        opUsername: data.filter(
+          user => user.username !== this.state.plUsername
+        )[0].username
+      });
     });
     this.socket.on("opponentLeft", () => {
       console.log("Opponent left, u won!!");
+    });
+    this.socket.on("exception", errorMessage => {
+      this.setState({
+        error: true,
+        errorMessage
+      });
     });
   }
   handleUsername = event => {
@@ -55,6 +57,9 @@ class App extends Component {
     this.socket.emit("join", {
       username: this.state.plUsername,
       room: this.state.room
+    });
+    this.setState({
+      start: true
     });
   };
   render() {
@@ -77,8 +82,16 @@ class App extends Component {
         </form>
       </div>
     );
-    if (this.state.start && this.state.opUsername) {
-      content = <Playground username={this.state.username} />;
+    if (this.state.error) {
+      content = <p>{this.state.errorMessage}</p>;
+    } else if (this.state.start && this.state.opUsername) {
+      content = (
+        <Playground
+          plUsername={this.state.plUsername}
+          opUsername={this.state.opUsername}
+          socket={this.socket}
+        />
+      );
     } else if (this.state.start && !this.state.opUsername) {
       content = <p>Waiting for a player to join the match</p>;
     }
