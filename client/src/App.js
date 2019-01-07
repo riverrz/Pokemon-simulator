@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import socketIOClient from "socket.io-client";
 import Playground from "./containers/Playground/Playground";
+import Landing from "./components/Landing/Landing";
 import "./App.css";
 
 class App extends Component {
@@ -64,23 +65,11 @@ class App extends Component {
   };
   render() {
     let content = (
-      <div className="App">
-        <form onSubmit={this.handleSubmit}>
-          <input
-            type="text"
-            placeholder="Username"
-            onChange={this.handleUsername}
-            required
-          />
-          <input
-            type="text"
-            placeholder="Room Name"
-            onChange={this.handleRoom}
-            required
-          />
-          <button>Submit</button>
-        </form>
-      </div>
+      <Landing
+        handleSubmit={this.handleSubmit}
+        handleUsername={this.handleUsername}
+        handleRoom={this.handleRoom}
+      />
     );
     if (this.state.error) {
       content = <p>{this.state.errorMessage}</p>;
