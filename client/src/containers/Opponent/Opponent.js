@@ -5,6 +5,7 @@ const opponent = props => {
     <div className="opponent">
       <div className="stats">
         <div className="top">
+          <div className="username__container">{props.username}</div>
           <div className="pokeballs">
             <div className="pokeball" />
             <div className="pokeball" />

@@ -9,8 +9,8 @@ class Playground extends Component {
     return (
       <Fragment>
         <div className="game">
-          <Opponent />
-          <Player />
+          <Opponent username={this.props.opUsername} />
+          <Player username={this.props.plUsername} />
         </div>
         <div className="box">
           <div id="message" className="message">

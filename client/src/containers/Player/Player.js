@@ -5,6 +5,7 @@ const player = props => {
     <div className="player">
       <div className="stats">
         <div className="top">
+          <div className="username__container">{props.username}</div>
           <div className="pokeballs">
             <div className="pokeball" />
             <div className="pokeball" />

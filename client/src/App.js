@@ -14,7 +14,7 @@ class App extends Component {
       start: false,
       error: false,
       errorMessage: ""
-    }; // should be fetched from the server
+    };
     this.socket = socketIOClient(this.state.endPoint);
   }
 
@@ -26,16 +26,11 @@ class App extends Component {
       console.log("Connection to the server lost!");
     });
     this.socket.on("opponentJoined", data => {
-      this.setState(
-        {
-          opUsername: data.filter(
-            user => user.username !== this.state.plUsername
-          )[0]
-        },
-        () => {
-          console.log(this.state.opUsername);
-        }
-      );
+      this.setState({
+        opUsername: data.filter(
+          user => user.username !== this.state.plUsername
+        )[0].username
+      });
     });
     this.socket.on("opponentLeft", () => {
       console.log("Opponent left, u won!!");
@@ -91,7 +86,11 @@ class App extends Component {
       content = <p>{this.state.errorMessage}</p>;
     } else if (this.state.start && this.state.opUsername) {
       content = (
-        <Playground username={this.state.username} socket={this.socket} />
+        <Playground
+          plUsername={this.state.plUsername}
+          opUsername={this.state.opUsername}
+          socket={this.socket}
+        />
       );
     } else if (this.state.start && !this.state.opUsername) {
       content = <p>Waiting for a player to join the match</p>;
