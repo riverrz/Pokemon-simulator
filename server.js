@@ -19,7 +19,7 @@ io.on("connection", socket => {
       if (usersInRoom >= 2) {
         socket.emit("exception", "Room is full");
       } else {
-        await Users.addUser(socket.id, data.username, data.room); // shouldnt be able to add user by same username
+        await Users.addUser(socket.id, data.username, data.room, data.pokemon); // shouldnt be able to add user by same username
         await Users.addUserInRoom(data.room, socket.id);
         socket.join(data.room);
         const playerList = await Users.getUsersByRoom(data.room);

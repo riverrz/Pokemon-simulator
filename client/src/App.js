@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import socketIOClient from "socket.io-client";
 import Playground from "./containers/Playground/Playground";
+import Landing from "./components/Landing/Landing";
 import "./App.css";
 
 class App extends Component {
@@ -13,7 +14,9 @@ class App extends Component {
       room: "",
       start: false,
       error: false,
-      errorMessage: ""
+      errorMessage: "",
+      plPokemon: "",
+      opPokemon: ""
     };
     this.socket = socketIOClient(this.state.endPoint);
   }
@@ -26,10 +29,14 @@ class App extends Component {
       console.log("Connection to the server lost!");
     });
     this.socket.on("opponentJoined", data => {
+      const opponent = data.filter(
+        user => user.username !== this.state.plUsername
+      )[0];
+      console.log(opponent);
+
       this.setState({
-        opUsername: data.filter(
-          user => user.username !== this.state.plUsername
-        )[0].username
+        opUsername: opponent.username,
+        opPokemon: opponent.pokemon
       });
     });
     this.socket.on("opponentLeft", () => {
@@ -52,11 +59,17 @@ class App extends Component {
       room: String(event.target.value)
     });
   };
+  handlePokemon = event => {
+    this.setState({
+      plPokemon: event.target.value
+    });
+  };
   handleSubmit = event => {
     event.preventDefault();
     this.socket.emit("join", {
       username: this.state.plUsername,
-      room: this.state.room
+      room: this.state.room,
+      pokemon: this.state.plPokemon
     });
     this.setState({
       start: true
@@ -64,23 +77,12 @@ class App extends Component {
   };
   render() {
     let content = (
-      <div className="App">
-        <form onSubmit={this.handleSubmit}>
-          <input
-            type="text"
-            placeholder="Username"
-            onChange={this.handleUsername}
-            required
-          />
-          <input
-            type="text"
-            placeholder="Room Name"
-            onChange={this.handleRoom}
-            required
-          />
-          <button>Submit</button>
-        </form>
-      </div>
+      <Landing
+        handleSubmit={this.handleSubmit}
+        handleUsername={this.handleUsername}
+        handleRoom={this.handleRoom}
+        handlePokemon={this.handlePokemon}
+      />
     );
     if (this.state.error) {
       content = <p>{this.state.errorMessage}</p>;
@@ -89,6 +91,8 @@ class App extends Component {
         <Playground
           plUsername={this.state.plUsername}
           opUsername={this.state.opUsername}
+          plPokemon={this.state.plPokemon}
+          opPokemon={this.state.opPokemon}
           socket={this.socket}
         />
       );

@@ -17,12 +17,14 @@ const player = props => {
             100
           </div>
         </div>
-        <span className="name">Blastoise</span>
+        <span className="name">{props.pokemon.toUpperCase()}</span>
         <span className="level">86</span>
       </div>
       <img
         className="pokemon"
-        src="http://play.pokemonshowdown.com/sprites/xyani/blastoise-mega.gif"
+        src={`http://play.pokemonshowdown.com/sprites/xyani/${
+          props.pokemon
+        }.gif`}
         alt="Pokemon"
       />
     </div>
