@@ -9,12 +9,18 @@ class Playground extends Component {
     return (
       <Fragment>
         <div className="game">
-          <Opponent username={this.props.opUsername} />
-          <Player username={this.props.plUsername} />
+          <Opponent
+            username={this.props.opUsername}
+            pokemon={this.props.opPokemon}
+          />
+          <Player
+            username={this.props.plUsername}
+            pokemon={this.props.plPokemon}
+          />
         </div>
         <div className="box">
           <div id="message" className="message">
-            What should Blastoise do?
+            What should {this.props.plPokemon.toUpperCase()} do?
           </div>
           <div className="actions">
             <button>Water Cannon</button>

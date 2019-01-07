@@ -15,6 +15,18 @@ const landing = props => {
         onChange={props.handleRoom}
         required
       />
+      <select
+        name="pokemon"
+        required
+        onChange={props.handlePokemon}
+        defaultValue=""
+      >
+        <option value="" hidden disabled>
+          Select a pokemon
+        </option>
+        <option value="charizard-megax">Charizard</option>
+        <option value="blastoise-mega">Blastoise</option>
+      </select>
       <button>Submit</button>
     </form>
   );
