@@ -1,6 +1,6 @@
 .game {
   position: relative;
-  background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/MCD_HQ.jpg/1200px-MCD_HQ.jpgsss');
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/MCD_HQ.jpg/1200px-MCD_HQ.jpgsss");
   background-size: 100% 100%;
   background-repeat: no-repeat;
   border: 3px solid black;
@@ -71,7 +71,7 @@
   width: 25%;
   height: 100%;
 }
-.box .continue  button {
+.box .continue button {
   position: relative;
   float: left;
   background: #666;
@@ -145,25 +145,28 @@
 .stats .pokeballs .pokeball {
   position: relative;
   float: left;
-  background-image: url('http://bit.ly/pokeballimg');
+  background-image: url("http://bit.ly/pokeballimg");
   background-size: 100% 100%;
   width: 25px;
   height: 25px;
 }
 
 .stats .hp-count:before {
-  content: 'HP: '
+  content: "HP: ";
 }
 
 .stats .hp-count {
   float: right;
 }
 
-
 .stats .name {
   font-weight: bold;
 }
 
 .stats .level:before {
-  content: "LVL"
+  content: "LVL";
+}
+
+.username__container {
+  font-weight: bold;
 }
