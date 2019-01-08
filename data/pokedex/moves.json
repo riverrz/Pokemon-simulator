@@ -1,0 +1,39 @@
+[
+{
+  "name": "absorb",
+  "type": "grass",
+  "category": "special",
+  "power": 20,
+  "accuracy": 1.0,
+  "pp": 20,
+  "effects": ["Absorb deals damage and the user will recover 50% of the HP drained."]
+},
+{
+ "name": "acid",
+ "type": "poison",
+  "category": "physical",
+   "power": 40,
+    "accuracy": 1.0,
+     "pp": 30,
+      "effect": {"chance": 0.1, "stat": "defense", "stages": -1}
+},
+{
+  "name":
+   "acid armor",
+    "type": "poison",
+     "category": "status",
+      "power": 0,
+       "accuracy": 0,
+        "pp": 40,
+         "effect": {"stat": "defense", "stages": 2}
+},
+{
+  "name": "agility",
+   "type": "psychic",
+    "category": "status",
+     "power": 0,
+      "accuracy": 0,
+       "pp": 30,
+        "effect": {"stat": "speed", "stages": 2}
+}
+]
