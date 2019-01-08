@@ -1,17 +1,5 @@
-const fs = require("fs");
-const path = require("path");
-const pathToMoves = path.join(__dirname, "../data/pokedex/moves.json");
-const pathToPokemon = path.join(__dirname, "../data/pokedex/pokemon.json");
-
-let attackdata = fs.readFileSync(pathToMoves);
-let moves = JSON.parse(attackdata);
-
-let pokedata = fs.readFileSync(pathToPokemon);
-let pokemon = JSON.parse(pokedata);
-
-let attacker = 1; //attacking Pokemon
-let target = 3; // Target Pokemon
-let attack = 1; // Attack Move
+const moves = require("../data/pokedex/moves.json");
+const pokemon = require("../data/pokedex/pokemon.json");
 
 var Attack_Stat = function(attacker) {
   if (pokemon[attacker].base.Attack > pokemon[attacker].base.Sp_Attack) {
@@ -31,7 +19,7 @@ var Defense_Stat = function(target) {
 
 //attacker denotes attacking pokemon
 //target denotes target pokemon
-var damage_calc = function() {
+var damage_calc = function(target, attacker, attack) {
   let level = pokemon[attacker].level;
   let Move_Power = moves[attack].power;
   let AtkStat = Attack_Stat(attacker);
@@ -54,7 +42,6 @@ var effect = function() {
     moves[attack].effect.stat ||
     moves[attack].effect.stages
   ) {
-    let chance = moves[attack].effect.chance;
     return (
       " Chance: " +
       moves[attack].effect.chance +
@@ -72,22 +59,6 @@ var random = function() {
   return Math.floor(Math.random() * Math.floor(3));
 };
 
-console.log(
-  pokemon[attacker].name + " Used " + moves[attack].name + " attack! "
-);
+console.log(damage_calc(1, 1, 1)); // find index of attacker, find index of attack, find index of target
 
-/*if(damage_calc()<1){
-  //let output1 = pokemon[target].name + " dodged the " + moves[attack].name + "! attack";
-  //console.log(output1);
-  console.log("dodge");
-}else {
-   //let output2 = pokemon[target].name + " got hit by " + moves[attack].name + "! attack";
-   //console.log(output2);
-   console.log("Hit");
-}*/
-console.log(
-  pokemon[target].name + " got hit by " + moves[attack].name + "! attack"
-);
-console.log(pokemon[target].name + " recieved " + damage_calc() + " damage.");
-
-console.log("Effect=>" + effect());
+module.exports = damage_calc;
