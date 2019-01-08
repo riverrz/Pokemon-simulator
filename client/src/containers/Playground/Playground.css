@@ -43,8 +43,9 @@
 .player .pokemon {
   position: absolute;
   left: 100px;
-  bottom: 10px;
+  bottom: 30px;
   width: 160px;
+  transform: rotateY(180deg);
 }
 
 .box {

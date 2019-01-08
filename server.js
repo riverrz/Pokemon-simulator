@@ -2,8 +2,10 @@ const express = require("express");
 const socketIO = require("socket.io");
 
 const http = require("http");
-
+const path = require("path");
 const app = express();
+
+app.use(express.static(path.join(__dirname, "./data/pokedex")));
 
 const server = http.createServer(app);
 const PORT = process.env.PORT || 5000;
