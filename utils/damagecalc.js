@@ -1,22 +1,22 @@
 const moves = require("../data/pokedex/moves.json");
 const pokemon = require("../data/pokedex/pokemon.json");
 
-var Attack_Stat = function(attackerIndex) {
+var Attack_Stat = function(int moveIndex)     {   //move.category callled from attack onClick()
   if (
-    pokemon[attackerIndex].base.Attack > pokemon[attackerIndex].base.Sp_Attack
+    moves[moveIndex].category == "physical"
   ) {
     return pokemon[attackerIndex].base.Attack;
-  } else {
+  } else if(moves[moveIndex].category=="special"){
     return pokemon[attackerIndex].base.Sp_Attack;
   }
 };
 
-var Defense_Stat = function(targetIndex) {
+var Defense_Stat = function(int moveIndex) {
   if (
-    pokemon[targetIndex].base.Defense > pokemon[targetIndex].base.Sp_Defense
+    moves[moveIndex].category == "physical"
   ) {
     return pokemon[targetIndex].base.Defense;
-  } else {
+  } else if(moves[moveIndex].category=="special"){
     return pokemon[targetIndex].base.Sp_Defense;
   }
 };
@@ -25,16 +25,17 @@ var Defense_Stat = function(targetIndex) {
 //targetIndex denotes index of target pokemon
 var damage_calc = function(targetIndex, attackerIndex, moveIndex) {
   let level = pokemon[attackerIndex].level;
+  let hp = pokemon[targetIndex].base.HP;
   let Move_Power = moves[moveIndex].power;
   let AtkStat = Attack_Stat(attackerIndex);
   let DefStat = Defense_Stat(targetIndex);
-  let Modifier = 1;
-  if (random() < 1) {
+  if (random() == 1) {
     return 0;
   } else {
-    return Math.round(
+    hp = hp - Math.round(
       ((((2 * level) / 5 + 2) * Move_Power * AtkStat) / DefStat / 50 + 2) *
-        Modifier
+        Modifier();
+    return hp;
     );
   }
 };
@@ -59,7 +60,21 @@ var effect = function(moveIndex) {
 };
 
 var random = function() {
-  return Math.floor(Math.random() * Math.floor(3));
+  return Math.floor((Math.random() * 10) + 1);
 };
+var Modifier = function(){
 
+      var critical = Math.floor((Math.random() * 10) + 1);
+      if(critical==4)
+      return 2*STAB(); // generation 1 onwards
+      else
+      return 1*STAB();
+};
+var STAB = function(attackerIndex,moveIndex){
+ if( pokemon[attackerIndex].type[0] == moves[moveIndex].type || attackerIndex].type[1] == moves[moveIndex].type  ) {
+   return 1.5;
+ }
+ else
+ return 1;
+}
 module.exports = damage_calc;
