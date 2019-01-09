@@ -5,6 +5,8 @@ const http = require("http");
 const path = require("path");
 const app = express();
 
+const Pokemons = require("./data/pokedex/pokemon.json");
+
 app.use(express.static(path.join(__dirname, "./data/pokedex")));
 
 const server = http.createServer(app);
@@ -41,6 +43,14 @@ io.on("connection", socket => {
       socket.broadcast.to(user.room).emit("opponentLeft");
     }
   });
+});
+
+// REST routes
+app.get("/pokemon/names", (req, res) => {
+  res.json(Pokemons.map(pokemon => pokemon.name));
+});
+app.get("/pokemons/:name", (req, res) => {
+  res.json(Pokemons.filter(pokemon => pokemon.name === req.params.name)[0]);
 });
 
 server.listen(PORT, () => {
