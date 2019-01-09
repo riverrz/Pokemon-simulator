@@ -9,7 +9,7 @@ function attack(targetName, attackerName, attackName) {
   const attackerIndex = findPokemonIndex(attackerName);
   const moveIndex = findMoveIndex(attackName);
 
-  console.log(damageCalc(targetIndex, attackerIndex, moveIndex));
+  console.log(damageCalc(100,targetIndex, attackerIndex, moveIndex));
 }
 
 // Testing
