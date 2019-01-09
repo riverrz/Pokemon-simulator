@@ -22,7 +22,7 @@ const opponent = props => {
       </div>
       <img
         className="pokemon"
-        src={`http://play.pokemonshowdown.com/sprites/xyani/${props.pokemon.toLowerCase()}.gif`}
+        src={`https://img.pokemondb.net/sprites/black-white/anim/normal/${props.pokemon.toLowerCase()}.gif`}
         alt="Pokemon"
       />
     </div>

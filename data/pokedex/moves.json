@@ -32,13 +32,13 @@
 },
 {
   "id":4,
-  "name": "agility",
-   "type": "psychic",
+  "name": "roar of time",
+   "type": "dragon",
     "category": "status",
-     "power": 0,
+     "power": 150,
       "accuracy": 0,
-       "pp": 30,
-        "effect": {"stat": "speed", "stages": 2}
+       "pp": 8,
+        "effect": {"stat": "Sp_Attack", "stages": 0.5}
 },
 
 ]
