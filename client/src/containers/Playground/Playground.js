@@ -2,16 +2,28 @@ import React, { Component, Fragment } from "react";
 import "./Playground.css";
 import Opponent from "../Opponent/Opponent";
 import Player from "../Player/Player";
+import AttackControl from "../../components/AttackControl/AttackControl";
 
 class Playground extends Component {
   state = {
     plPokemonObj: {},
-    opPokemonObj: {}
+    opPokemonObj: {},
+    moves: []
   };
   componentDidMount() {
     fetch(`/pokemons/${this.props.plPokemon}`)
       .then(res => res.json())
       .then(plPokemonObj => {
+        const promiseArr = plPokemonObj.moves.map(id => {
+          return fetch(`/moves/${id}`).then(res => res.json());
+        });
+        Promise.all(promiseArr)
+          .then(moves => {
+            this.setState({
+              moves
+            });
+          })
+          .catch(console.log);
         fetch(`/pokemons/${this.props.opPokemon}`)
           .then(res => res.json())
           .then(opPokemonObj => {
@@ -39,12 +51,7 @@ class Playground extends Component {
           <div id="message" className="message">
             What should {this.props.plPokemon.toUpperCase()} do?
           </div>
-          <div className="actions">
-            <button>Water Cannon</button>
-            <button>Water Pulse</button>
-            <button>Surf</button>
-            <button>Tackle</button>
-          </div>
+          <AttackControl moves={this.state.moves} />
           <div className="continue">
             <button>Continue</button>
           </div>

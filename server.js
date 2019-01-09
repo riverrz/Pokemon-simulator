@@ -6,6 +6,7 @@ const path = require("path");
 const app = express();
 
 const Pokemons = require("./data/pokedex/pokemon.json");
+const Moves = require("./data/pokedex/moves.json");
 
 app.use(express.static(path.join(__dirname, "./data/pokedex")));
 
@@ -51,6 +52,10 @@ app.get("/pokemon/names", (req, res) => {
 });
 app.get("/pokemons/:name", (req, res) => {
   res.json(Pokemons.filter(pokemon => pokemon.name === req.params.name)[0]);
+});
+app.get("/moves/:id", (req, res) => {
+  const move = Moves.filter(move => move.id === Number(req.params.id))[0];
+  res.json(move);
 });
 
 server.listen(PORT, () => {
