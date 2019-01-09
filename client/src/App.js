@@ -16,7 +16,8 @@ class App extends Component {
       error: false,
       errorMessage: "",
       plPokemon: "",
-      opPokemon: ""
+      opPokemon: "",
+      resultMessage: ""
     };
     this.socket = socketIOClient(this.state.endPoint);
   }
@@ -40,7 +41,10 @@ class App extends Component {
       });
     });
     this.socket.on("opponentLeft", () => {
-      console.log("Opponent left, u won!!");
+      this.setState({
+        start: false,
+        resultMessage: "You won! opponent left the match"
+      });
     });
     this.socket.on("exception", errorMessage => {
       this.setState({
@@ -98,6 +102,8 @@ class App extends Component {
       );
     } else if (this.state.start && !this.state.opUsername) {
       content = <p>Waiting for a player to join the match</p>;
+    } else if (!this.state.start && this.state.resultMessage) {
+      content = <p>{this.state.resultMessage}</p>;
     }
     return content;
   }
