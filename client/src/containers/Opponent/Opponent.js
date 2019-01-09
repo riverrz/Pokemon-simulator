@@ -16,11 +16,11 @@ const opponent = props => {
               <div className="pokeball" />
             </div>
             <div id="apHP" className="hp-count">
-              100
+              {props.pokemon.base.HP}
             </div>
           </div>
           <span className="name">{props.pokemon.name.toUpperCase()}</span>
-          <span className="level">86</span>
+          <span className="level">{props.pokemon.level}</span>
         </div>
         <img
           className="pokemon"
