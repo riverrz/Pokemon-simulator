@@ -1,5 +1,6 @@
 [
 {
+  "id":1,
   "name": "absorb",
   "type": "grass",
   "category": "special",
@@ -9,6 +10,7 @@
   "effects": ["Absorb deals damage and the user will recover 50% of the HP drained."]
 },
 {
+  "id":2,
  "name": "acid",
  "type": "poison",
   "category": "physical",
@@ -18,6 +20,7 @@
       "effect": {"chance": 0.1, "stat": "defense", "stages": -1}
 },
 {
+  "id":3,
   "name":
    "acid armor",
     "type": "poison",
@@ -28,12 +31,14 @@
          "effect": {"stat": "defense", "stages": 2}
 },
 {
-  "name": "agility",
-   "type": "psychic",
+  "id":4,
+  "name": "roar of time",
+   "type": "dragon",
     "category": "status",
-     "power": 0,
+     "power": 150,
       "accuracy": 0,
-       "pp": 30,
-        "effect": {"stat": "speed", "stages": 2}
-}
+       "pp": 8,
+        "effect": {"stat": "Sp_Attack", "stages": 0.5}
+},
+
 ]

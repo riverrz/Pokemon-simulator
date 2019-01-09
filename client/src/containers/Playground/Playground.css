@@ -1,6 +1,6 @@
 .game {
   position: relative;
-  background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/MCD_HQ.jpg/1200px-MCD_HQ.jpgsss");
+  background-image: url("http://www.canbum.net/cdn/27/1994/758/pokemon-battle-showdown-background_210489.jpg");
   background-size: 100% 100%;
   background-repeat: no-repeat;
   border: 3px solid black;
@@ -45,7 +45,7 @@
   left: 100px;
   bottom: 30px;
   width: 160px;
-  transform: rotateY(180deg);
+  /*transform: rotateY(180deg);*/ /*no need of this*/
 }
 
 .box {

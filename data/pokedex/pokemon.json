@@ -6,6 +6,7 @@
       "Grass",
       "Poison"
     ],
+    "moves":[1, 2, 3, 4],
     "base": {
       "HP": 45,
       "Attack": 49,
@@ -23,6 +24,7 @@
       "Grass",
       "Poison"
     ],
+    "moves":[1, 2, 3, 4],
     "base": {
       "HP": 60,
       "Attack": 62,
@@ -40,6 +42,7 @@
       "Grass",
       "Poison"
     ],
+    "moves":[1, 2, 3, 4],
     "base": {
       "HP": 80,
       "Attack": 82,
@@ -56,6 +59,7 @@
     "type": [
       "Fire"
     ],
+    "moves":[1, 2, 3, 4],
     "base": {
       "HP": 39,
       "Attack": 52,
@@ -72,6 +76,7 @@
     "type": [
       "Fire"
     ],
+    "moves":[1, 2, 3, 4],
     "base": {
       "HP": 58,
       "Attack": 64,
@@ -89,6 +94,7 @@
       "Fire",
       "Flying"
     ],
+    "moves":[1, 2, 3, 4],
     "base": {
       "HP": 78,
       "Attack": 84,
@@ -105,6 +111,7 @@
     "type": [
       "Water"
     ],
+    "moves":[1, 2, 3, 4],
     "base": {
       "HP": 44,
       "Attack": 48,
@@ -121,6 +128,7 @@
     "type": [
       "Water"
     ],
+    "moves":[1, 2, 3, 4],
     "base": {
       "HP": 59,
       "Attack": 63,
@@ -137,6 +145,7 @@
     "type": [
       "Water"
     ],
+    "moves":[1, 2, 3, 4],
     "base": {
       "HP": 79,
       "Attack": 83,
