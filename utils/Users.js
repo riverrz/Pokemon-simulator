@@ -47,7 +47,7 @@ async function deleteRoom(room) {
 // create a room using a list with socket ids
 async function addUserInRoom(room, id) {
   return new Promise((resolve, reject) => {
-    client.lpush(room, id, function(err, res) {
+    client.lpush(String(room), id, function(err, res) {
       if (err) {
         console.log(err);
         return reject(err);
