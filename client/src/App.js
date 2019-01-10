@@ -70,14 +70,20 @@ class App extends Component {
   };
   handleSubmit = event => {
     event.preventDefault();
-    this.socket.emit("join", {
-      username: this.state.plUsername,
-      room: this.state.room,
-      pokemon: this.state.plPokemon
-    });
-    this.setState({
-      start: true
-    });
+    // Can be improved?
+    fetch(`/pokemons/${this.state.plPokemon}`)
+      .then(res => res.json())
+      .then(pokemonObj => {
+        this.socket.emit("join", {
+          username: this.state.plUsername,
+          room: this.state.room,
+          pokemon: this.state.plPokemon,
+          pokemonHP: pokemonObj.base.HP
+        });
+        this.setState({
+          start: true
+        });
+      });
   };
   render() {
     let content = (

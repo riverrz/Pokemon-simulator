@@ -16,6 +16,7 @@ const PORT = process.env.PORT || 5000;
 const io = socketIO(server);
 
 const Users = require("./utils/Users");
+const { attack } = require("./utils/attack");
 
 io.on("connection", socket => {
   socket.on("join", async data => {
@@ -24,7 +25,13 @@ io.on("connection", socket => {
       if (usersInRoom >= 2) {
         socket.emit("exception", "Room is full");
       } else {
-        await Users.addUser(socket.id, data.username, data.room, data.pokemon); // shouldnt be able to add user by same username
+        await Users.addUser(
+          socket.id,
+          data.username,
+          data.room,
+          data.pokemon,
+          data.pokemonHP
+        ); // shouldnt be able to add user by same username
         await Users.addUserInRoom(data.room, socket.id);
         socket.join(data.room);
         const playerList = await Users.getUsersByRoom(data.room);
@@ -36,6 +43,34 @@ io.on("connection", socket => {
       socket.emit("exception", "Some error occurred");
       console.log(err);
     }
+  });
+  socket.on("attack", async data => {
+    // Get user room name
+    // Call attack function in attack.js to handle the attack
+    // Emit a new event to update the HP and handle it in Playground.js
+    const user = await Users.getUser(socket.id);
+    attack(
+      socket.id,
+      data.hp,
+      data.targetName,
+      data.attackerName,
+      data.attackName
+    )
+      .then(newHP => {
+        if (newHP) {
+          // emit hp updation events , one to player and one to opponent
+          // can be better ?
+          socket.broadcast.to(user.room).emit("playerHPUpdate", {
+            newHP
+          });
+          socket.emit("opponentHPUpdate", {
+            newHP
+          });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   });
   socket.on("disconnect", async () => {
     const user = await Users.getUser(socket.id);

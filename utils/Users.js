@@ -2,7 +2,7 @@ const redis = require("redis");
 const client = redis.createClient();
 
 // Add a user by socket id in hset
-function addUser(id, username, room, pokemon) {
+function addUser(id, username, room, pokemon, pokemonHP) {
   return new Promise((resolve, reject) => {
     client.hmset(
       id,
@@ -14,6 +14,8 @@ function addUser(id, username, room, pokemon) {
       id,
       "pokemon",
       pokemon,
+      "pokemonHP",
+      String(pokemonHP),
       function(err, res) {
         if (err) {
           return reject(err);
