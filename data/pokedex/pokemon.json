@@ -2,11 +2,8 @@
   {
     "id": 1,
     "name": "Bulbasaur",
-    "type": [
-      "Grass",
-      "Poison"
-    ],
-    "moves":[1, 2, 3, 4],
+    "type": ["Grass", "Poison"],
+    "moves": [1, 2, 3, 4],
     "base": {
       "HP": 45,
       "Attack": 49,
@@ -15,16 +12,13 @@
       "Sp_Defense": 65,
       "Speed": 45
     },
-    "level":20
+    "level": 20
   },
   {
     "id": 2,
-    "name":"Ivysaur",
-    "type": [
-      "Grass",
-      "Poison"
-    ],
-    "moves":[1, 2, 3, 4],
+    "name": "Ivysaur",
+    "type": ["Grass", "Poison"],
+    "moves": [1, 2, 3, 4],
     "base": {
       "HP": 60,
       "Attack": 62,
@@ -33,16 +27,13 @@
       "Sp_Defense": 80,
       "Speed": 60
     },
-    "level":50
+    "level": 50
   },
   {
     "id": 3,
-    "name":"Venusaur",
-    "type": [
-      "Grass",
-      "Poison"
-    ],
-    "moves":[1, 2, 3, 4],
+    "name": "Venusaur",
+    "type": ["Grass", "Poison"],
+    "moves": [1, 2, 3, 4],
     "base": {
       "HP": 80,
       "Attack": 82,
@@ -51,15 +42,13 @@
       "Sp_Defense": 100,
       "Speed": 80
     },
-    "level":100
+    "level": 100
   },
   {
     "id": 4,
-    "name":"Charmander",
-    "type": [
-      "Fire"
-    ],
-    "moves":[1, 2, 3, 4],
+    "name": "Charmander",
+    "type": ["Fire"],
+    "moves": [1, 2, 3, 4],
     "base": {
       "HP": 39,
       "Attack": 52,
@@ -68,15 +57,13 @@
       "Sp_Defense": 50,
       "Speed": 65
     },
-    "level":20
+    "level": 20
   },
   {
     "id": 5,
-    "name":"Charmeleon",
-    "type": [
-      "Fire"
-    ],
-    "moves":[1, 2, 3, 4],
+    "name": "Charmeleon",
+    "type": ["Fire"],
+    "moves": [1, 2, 3, 4],
     "base": {
       "HP": 58,
       "Attack": 64,
@@ -85,16 +72,13 @@
       "Sp_Defense": 65,
       "Speed": 80
     },
-    "level":50
+    "level": 50
   },
   {
     "id": 6,
-    "name":"Charizard",
-    "type": [
-      "Fire",
-      "Flying"
-    ],
-    "moves":[1, 2, 3, 4],
+    "name": "Charizard",
+    "type": ["Fire", "Flying"],
+    "moves": [1, 2, 3, 4],
     "base": {
       "HP": 78,
       "Attack": 84,
@@ -103,15 +87,13 @@
       "Sp_Defense": 85,
       "Speed": 100
     },
-    "level":100
+    "level": 100
   },
   {
     "id": 7,
-    "name":"Squirtle",
-    "type": [
-      "Water"
-    ],
-    "moves":[1, 2, 3, 4],
+    "name": "Squirtle",
+    "type": ["Water"],
+    "moves": [1, 2, 3, 4],
     "base": {
       "HP": 44,
       "Attack": 48,
@@ -120,15 +102,13 @@
       "Sp_Defense": 64,
       "Speed": 43
     },
-    "level":20
+    "level": 20
   },
   {
     "id": 8,
-    "name":"Wartortle",
-    "type": [
-      "Water"
-    ],
-    "moves":[1, 2, 3, 4],
+    "name": "Wartortle",
+    "type": ["Water"],
+    "moves": [1, 2, 3, 4],
     "base": {
       "HP": 59,
       "Attack": 63,
@@ -137,15 +117,13 @@
       "Sp_Defense": 80,
       "Speed": 58
     },
-    "level":50
+    "level": 50
   },
   {
     "id": 9,
-    "name":"Blastoise",
-    "type": [
-      "Water"
-    ],
-    "moves":[1, 2, 3, 4],
+    "name": "Blastoise",
+    "type": ["Water"],
+    "moves": [1, 2, 3, 4],
     "base": {
       "HP": 79,
       "Attack": 83,
@@ -154,6 +132,6 @@
       "Sp_Defense": 105,
       "Speed": 78
     },
-    "level":100
+    "level": 100
   }
 ]

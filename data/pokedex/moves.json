@@ -1,44 +1,44 @@
 [
-{
-  "id":1,
-  "name": "absorb",
-  "type": "grass",
-  "category": "special",
-  "power": 20,
-  "accuracy": 1.0,
-  "pp": 20,
-  "effects": ["Absorb deals damage and the user will recover 50% of the HP drained."]
-},
-{
-  "id":2,
- "name": "acid",
- "type": "poison",
-  "category": "physical",
-   "power": 40,
+  {
+    "id": 1,
+    "name": "absorb",
+    "type": "grass",
+    "category": "special",
+    "power": 20,
     "accuracy": 1.0,
-     "pp": 30,
-      "effect": {"chance": 0.1, "stat": "defense", "stages": -1}
-},
-{
-  "id":3,
-  "name":
-   "acid armor",
+    "pp": 20,
+    "effects": [
+      "Absorb deals damage and the user will recover 50% of the HP drained."
+    ]
+  },
+  {
+    "id": 2,
+    "name": "acid",
     "type": "poison",
-     "category": "status",
-      "power": 0,
-       "accuracy": 0,
-        "pp": 40,
-         "effect": {"stat": "defense", "stages": 2}
-},
-{
-  "id":4,
-  "name": "roar of time",
-   "type": "dragon",
+    "category": "physical",
+    "power": 40,
+    "accuracy": 1.0,
+    "pp": 30,
+    "effect": { "chance": 0.1, "stat": "defense", "stages": -1 }
+  },
+  {
+    "id": 3,
+    "name": "acid armor",
+    "type": "poison",
     "category": "status",
-     "power": 150,
-      "accuracy": 0,
-       "pp": 8,
-        "effect": {"stat": "Sp_Attack", "stages": 0.5}
-},
-
+    "power": 0,
+    "accuracy": 0,
+    "pp": 40,
+    "effect": { "stat": "defense", "stages": 2 }
+  },
+  {
+    "id": 4,
+    "name": "roar of time",
+    "type": "dragon",
+    "category": "status",
+    "power": 150,
+    "accuracy": 0,
+    "pp": 8,
+    "effect": { "stat": "Sp_Attack", "stages": 0.5 }
+  }
 ]

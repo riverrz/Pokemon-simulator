@@ -1,16 +1,26 @@
 const damageCalc = require("./damagecalc");
 const { findPokemonIndex, findMoveIndex } = require("./helpers");
+const { updateHealth } = require("./pokemon");
 
 // Should calculate the new target's health
 // Update the opponent's health
 // Generate resultant text
-function attack(targetName, attackerName, attackName) {
+function attack(userID, hp, targetName, attackerName, attackName) {
   const targetIndex = findPokemonIndex(targetName);
   const attackerIndex = findPokemonIndex(attackerName);
   const moveIndex = findMoveIndex(attackName);
 
-  console.log(damageCalc(targetIndex, attackerIndex, moveIndex));
+  const newHP = damageCalc(hp, targetIndex, attackerIndex, moveIndex);
+  return updateHealth(newHP, userID)
+    .then(res => {
+      return newHP;
+    })
+    .catch(err => {
+      console.log(err);
+      return false;
+    });
 }
 
-// Testing
-attack("Bulbasaur", "Ivysaur", "acid");
+module.exports = {
+  attack
+};
