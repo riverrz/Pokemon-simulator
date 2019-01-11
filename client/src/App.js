@@ -17,7 +17,8 @@ class App extends Component {
       errorMessage: "",
       plPokemon: "",
       opPokemon: "",
-      resultMessage: ""
+      resultMessage: "",
+      plStats: {}
     };
     this.socket = socketIOClient(this.state.endPoint);
   }
@@ -29,15 +30,24 @@ class App extends Component {
     this.socket.on("disconnect", () => {
       console.log("Connection to the server lost!");
     });
-    this.socket.on("opponentJoined", data => {
-      const opponent = data.filter(
+    this.socket.on("opponentJoined", playerList => {
+      console.log(playerList);
+      const opponent = playerList.filter(
         user => user.username !== this.state.plUsername
       )[0];
-      console.log(opponent);
-
+      const player = playerList.filter(user => user.username === this.state.plUsername)[0];
+      console.log(player)
+       const plStats = {
+        attack : player.Attack,
+        defence: player.Defence,
+        speed: player.Speed,
+        sp_attack: player.Sp_Attack,
+        sp_defence: player.Sp_Defence
+      }
       this.setState({
         opUsername: opponent.username,
-        opPokemon: opponent.pokemon
+        opPokemon: opponent.pokemon,
+        plStats
       });
     });
     this.socket.on("opponentLeft", () => {
@@ -78,7 +88,12 @@ class App extends Component {
           username: this.state.plUsername,
           room: this.state.room,
           pokemon: this.state.plPokemon,
-          pokemonHP: pokemonObj.base.HP
+          pokemonHP: pokemonObj.base.HP,
+          attack: pokemonObj.base.Attack,
+          defence: pokemonObj.base.Defence,
+          speed: pokemonObj.base.Speed,
+          sp_attack: pokemonObj.base.Sp_Attack,
+          sp_defence: pokemonObj.base.Sp_Defence
         });
         this.setState({
           start: true
@@ -103,6 +118,7 @@ class App extends Component {
           opUsername={this.state.opUsername}
           plPokemon={this.state.plPokemon}
           opPokemon={this.state.opPokemon}
+          plStats={this.state.plStats}
           socket={this.socket}
         />
       );

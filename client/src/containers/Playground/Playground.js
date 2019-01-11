@@ -72,6 +72,7 @@ class Playground extends Component {
           <Player
             username={this.props.plUsername}
             pokemon={this.state.plPokemonObj}
+            stats = {this.props.plStats}
           />
         </div>
         <div className="box">
