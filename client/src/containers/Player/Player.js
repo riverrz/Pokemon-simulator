@@ -2,6 +2,7 @@ import React from "react";
 
 const player = props => {
   let content = <p>LOADING.....</p>;
+  console.log(props.stats)
   if (props.pokemon.name) {
     content = (
       <div className="player">

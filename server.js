@@ -26,11 +26,18 @@ io.on("connection", socket => {
         socket.emit("exception", "Room is full");
       } else {
         await Users.addUser(
-          socket.id,
-          data.username,
-          data.room,
-          data.pokemon,
-          data.pokemonHP
+          {
+            id:socket.id,
+            username:data.username,
+            room:data.room,
+            pokemon:data.pokemon,
+            pokemonHP:data.pokemonHP,
+            attack: data.attack,
+            defence: data.defence,
+            sp_attack: data.sp_attack,
+            sp_defence: data.sp_defence,
+            speed: data.speed
+          }
         ); // shouldnt be able to add user by same username
         await Users.addUserInRoom(data.room, socket.id);
         socket.join(data.room);
