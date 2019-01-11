@@ -10,11 +10,11 @@ function Attack_Stat(moveIndex, attackerIndex) {
   }
 }
 
-function Defense_Stat(moveIndex, targetIndex) {
+function Defence_Stat(moveIndex, targetIndex) {
   if (moves[moveIndex].category == "physical") {
-    return pokemon[targetIndex].base.Defense;
+    return pokemon[targetIndex].base.Defence;
   } else if (moves[moveIndex].category == "special") {
-    return pokemon[targetIndex].base.Sp_Defense;
+    return pokemon[targetIndex].base.Sp_Defence;
   }
 }
 
@@ -24,7 +24,7 @@ function damage_calc(hp, targetIndex, attackerIndex, moveIndex) {
   const level = pokemon[attackerIndex].level;
   const Move_Power = moves[moveIndex].power;
   const AtkStat = Attack_Stat(moveIndex, attackerIndex);
-  const DefStat = Defense_Stat(moveIndex, targetIndex);
+  const DefStat = Defence_Stat(moveIndex, targetIndex);
   if (random() == 1) {
     return 0;
   } else {
