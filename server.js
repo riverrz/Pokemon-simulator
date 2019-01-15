@@ -68,25 +68,40 @@ io.on("connection", socket => {
     // Call attack function in attack.js to handle the attack
     // Emit a new event to update the HP and handle it in Playground.js
     const user = await Users.getUser(socket.id);
-    console.log(user);
+    const playerList = await Users.getUsersByRoom(user.room);
+    const opponent = playerList.filter(
+      player => player.username !== user.username
+    )[0];
     // Check if user can attack
     if (!JSON.parse(user.canAttack)) {
       return;
     }
     attack(
-      socket.id,
+      user.id,
       data.hp,
       data.targetName,
       data.attackerName,
       data.attackName
     )
-      .then(newHP => {
+      .then(async newHP => {
         if (newHP) {
+          // change the canAttack attribute of the attacker to false, and opponent's to true
+          await Users.updateUser(user.id, {
+            canAttack: false
+          });
+          await Users.updateUser(opponent.id, {
+            canAttack: true
+          });
+
+          // emit canAttackChanged event
+          socket.broadcast.to(user.room).emit("canAttackChanged", true);
+          socket.emit("canAttackChanged", false);
+
           // emit hp updation events , one to player and one to opponent
-          // can be better ?
           socket.broadcast.to(user.room).emit("playerHPUpdate", {
             newHP
           });
+
           socket.emit("opponentHPUpdate", {
             newHP
           });

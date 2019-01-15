@@ -25,12 +25,17 @@ class App extends Component {
   }
 
   componentDidMount() {
+    // Connection Event
     this.socket.on("connect", () => {
       console.log("Connected to the server");
     });
+
+    // Disconnection Event
     this.socket.on("disconnect", () => {
       console.log("Connection to the server lost!");
     });
+
+    // Opponent Joined Event
     this.socket.on("opponentJoined", playerList => {
       const opponent = playerList.filter(
         user => user.username !== this.state.plUsername
@@ -52,12 +57,23 @@ class App extends Component {
         canAttack: player.canAttack
       });
     });
+
+    // Opponent Left Event
     this.socket.on("opponentLeft", () => {
       this.setState({
         start: false,
         resultMessage: "You won! opponent left the match"
       });
     });
+
+    // canAttackChanged Event
+    this.socket.on("canAttackChanged", canAttack => {
+      this.setState({
+        canAttack
+      });
+    });
+
+    // Exception Occurred Event
     this.socket.on("exception", errorMessage => {
       this.setState({
         error: true,

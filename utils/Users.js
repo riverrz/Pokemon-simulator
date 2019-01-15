@@ -129,7 +129,6 @@ function updateUser(id, obj) {
     });
     Promise.all(promiseArr)
       .then(res => {
-        console.log("Updated");
         resolve(res);
       })
       .catch(err => reject(err));
