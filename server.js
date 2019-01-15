@@ -5,8 +5,8 @@ const http = require("http");
 const path = require("path");
 const app = express();
 
-const Pokemons = require("./data/pokedex/pokemon.json");
-const Moves = require("./data/pokedex/moves.json");
+const pokemonRoutes = require("./routes/pokemonRoutes");
+const movesRoutes = require("./routes/movesRoutes");
 
 app.use(express.static(path.join(__dirname, "./data/pokedex")));
 
@@ -25,20 +25,18 @@ io.on("connection", socket => {
       if (usersInRoom >= 2) {
         socket.emit("exception", "Room is full");
       } else {
-        await Users.addUser(
-          {
-            id:socket.id,
-            username:data.username,
-            room:data.room,
-            pokemon:data.pokemon,
-            pokemonHP:data.pokemonHP,
-            attack: data.attack,
-            defence: data.defence,
-            sp_attack: data.sp_attack,
-            sp_defence: data.sp_defence,
-            speed: data.speed
-          }
-        ); // shouldnt be able to add user by same username
+        await Users.addUser({
+          id: socket.id,
+          username: data.username,
+          room: data.room,
+          pokemon: data.pokemon,
+          pokemonHP: data.pokemonHP,
+          attack: data.attack,
+          defence: data.defence,
+          sp_attack: data.sp_attack,
+          sp_defence: data.sp_defence,
+          speed: data.speed
+        }); // shouldnt be able to add user by same username
         await Users.addUserInRoom(data.room, socket.id);
         socket.join(data.room);
         const playerList = await Users.getUsersByRoom(data.room);
@@ -89,16 +87,8 @@ io.on("connection", socket => {
 });
 
 // REST routes
-app.get("/pokemon/names", (req, res) => {
-  res.json(Pokemons.map(pokemon => pokemon.name));
-});
-app.get("/pokemons/:name", (req, res) => {
-  res.json(Pokemons.filter(pokemon => pokemon.name === req.params.name)[0]);
-});
-app.get("/moves/:id", (req, res) => {
-  const move = Moves.filter(move => move.id === Number(req.params.id))[0];
-  res.json(move);
-});
+app.use("/pokemons", pokemonRoutes);
+app.use("/moves", movesRoutes);
 
 server.listen(PORT, () => {
   console.log("Server has started");
