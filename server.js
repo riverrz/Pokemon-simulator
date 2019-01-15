@@ -40,7 +40,21 @@ io.on("connection", socket => {
         await Users.addUserInRoom(data.room, socket.id);
         socket.join(data.room);
         const playerList = await Users.getUsersByRoom(data.room);
+
         if (playerList.length === 2) {
+          // Convert canAttack from string to boolean
+          playerList[0].canAttack = JSON.parse(playerList[0].canAttack);
+          playerList[1].canAttack = JSON.parse(playerList[1].canAttack);
+
+          // Set a player's canAttack to true randomly
+          const chosenIndex = Math.floor(Math.random() * 2);
+          playerList[chosenIndex].canAttack = true;
+
+          // Update canAttack value of the chosenUser
+          await Users.updateUser(playerList[chosenIndex].id, {
+            canAttack: true
+          });
+
           io.to(data.room).emit("opponentJoined", playerList);
         }
       }
@@ -54,6 +68,11 @@ io.on("connection", socket => {
     // Call attack function in attack.js to handle the attack
     // Emit a new event to update the HP and handle it in Playground.js
     const user = await Users.getUser(socket.id);
+    console.log(user);
+    // Check if user can attack
+    if (!JSON.parse(user.canAttack)) {
+      return;
+    }
     attack(
       socket.id,
       data.hp,

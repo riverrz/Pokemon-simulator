@@ -18,7 +18,8 @@ class App extends Component {
       plPokemon: "",
       opPokemon: "",
       resultMessage: "",
-      plStats: {}
+      plStats: {},
+      canAttack: false
     };
     this.socket = socketIOClient(this.state.endPoint);
   }
@@ -31,23 +32,24 @@ class App extends Component {
       console.log("Connection to the server lost!");
     });
     this.socket.on("opponentJoined", playerList => {
-      console.log(playerList);
       const opponent = playerList.filter(
         user => user.username !== this.state.plUsername
       )[0];
-      const player = playerList.filter(user => user.username === this.state.plUsername)[0];
-      console.log(player)
-       const plStats = {
-        attack : player.Attack,
+      const player = playerList.filter(
+        user => user.username === this.state.plUsername
+      )[0];
+      const plStats = {
+        attack: player.Attack,
         defence: player.Defence,
         speed: player.Speed,
         sp_attack: player.Sp_Attack,
         sp_defence: player.Sp_Defence
-      }
+      };
       this.setState({
         opUsername: opponent.username,
         opPokemon: opponent.pokemon,
-        plStats
+        plStats,
+        canAttack: player.canAttack
       });
     });
     this.socket.on("opponentLeft", () => {
@@ -120,6 +122,7 @@ class App extends Component {
           opPokemon={this.state.opPokemon}
           plStats={this.state.plStats}
           socket={this.socket}
+          canAttack={this.state.canAttack}
         />
       );
     } else if (this.state.start && !this.state.opUsername) {

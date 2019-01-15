@@ -26,6 +26,8 @@ function addUser(user) {
       user.sp_attack,
       "Sp_Defence",
       user.sp_defence,
+      "canAttack",
+      "false",
       function(err, res) {
         if (err) {
           return reject(err);
@@ -106,6 +108,34 @@ function getUser(id) {
   });
 }
 
+function updateUserAttribute(id, key, value) {
+  id = String(id);
+  key = String(key);
+  value = String(value);
+  return new Promise((resolve, reject) => {
+    client.hset(id, key, value, function(err, res) {
+      if (err) {
+        return reject(err);
+      }
+      resolve(res);
+    });
+  });
+}
+
+function updateUser(id, obj) {
+  return new Promise((resolve, reject) => {
+    const promiseArr = Object.keys(obj).map(key => {
+      return updateUserAttribute(id, key, obj[key]);
+    });
+    Promise.all(promiseArr)
+      .then(res => {
+        console.log("Updated");
+        resolve(res);
+      })
+      .catch(err => reject(err));
+  });
+}
+
 module.exports = {
   addUser,
   deleteKey,
@@ -113,5 +143,6 @@ module.exports = {
   addUserInRoom,
   getUsersByRoom,
   getUser,
-  countUsers
+  countUsers,
+  updateUser
 };
