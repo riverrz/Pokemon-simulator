@@ -106,7 +106,10 @@ io.on("connection", socket => {
             newHP
           });
         } else {
-          io.to(user.room).emit("gameover", user.username);
+          if (user && user.room) {
+            await Users.deleteRoom(user.room);
+            io.to(user.room).emit("gameover", user.username);
+          }
         }
       })
       .catch(err => {
