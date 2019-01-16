@@ -10,7 +10,11 @@ function attack(userID, hp, targetName, attackerName, attackName) {
   const attackerIndex = findPokemonIndex(attackerName);
   const moveIndex = findMoveIndex(attackName);
 
-  const newHP = damageCalc(hp, targetIndex, attackerIndex, moveIndex);
+  let newHP = damageCalc(hp, targetIndex, attackerIndex, moveIndex);
+  if (newHP < 0) {
+    newHP = 0;
+  }
+
   return updateHealth(newHP, userID)
     .then(res => {
       return newHP;

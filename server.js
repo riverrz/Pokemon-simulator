@@ -105,6 +105,8 @@ io.on("connection", socket => {
           socket.emit("opponentHPUpdate", {
             newHP
           });
+        } else {
+          io.to(user.room).emit("gameover", user.username);
         }
       })
       .catch(err => {
