@@ -60,16 +60,37 @@ class App extends Component {
 
     // Opponent Left Event
     this.socket.on("opponentLeft", () => {
-      this.setState({
-        start: false,
-        resultMessage: "You won! opponent left the match"
-      });
+      if (this.state.start) {
+        this.setState({
+          start: false,
+          resultMessage: "You won! opponent left the match"
+        });
+      }
     });
 
     // canAttackChanged Event
     this.socket.on("canAttackChanged", canAttack => {
       this.setState({
         canAttack
+      });
+    });
+
+    // Gameover event
+    this.socket.on("gameover", winner => {
+      let resultMessage;
+      if (this.state.plUsername === winner) {
+        resultMessage = "Game Over! You won the match";
+      } else if (this.state.opUsername === winner) {
+        resultMessage = "Game Over! Sorry you lost the match";
+      } else {
+        return this.setState({
+          error: true,
+          errorMessage: "Some error occurred in determining the winner"
+        });
+      }
+      this.setState({
+        start: false,
+        resultMessage
       });
     });
 
