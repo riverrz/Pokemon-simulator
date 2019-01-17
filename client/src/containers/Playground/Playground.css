@@ -100,33 +100,6 @@
   width: 50%;
   height: 100%;
 }
-
-.box .actions button {
-  position: relative;
-  float: left;
-  background: #666;
-  border: 3px solid #888;
-  border-radius: 4px;
-  color: #fff;
-  font-family: monospace;
-  font-size: 20px;
-  line-height: 14px;
-  margin: 4px;
-  padding: 16px;
-  width: calc(50% - 8px);
-  height: calc(50% - 8px);
-  outline: none !important;
-}
-
-.box .actions button:hover {
-  background: #777;
-  border-color: #999;
-}
-
-.box .actions button:active {
-  background: #555;
-  border-color: #666;
-}
 .stats {
   background: #111;
   border: 2px solid black;

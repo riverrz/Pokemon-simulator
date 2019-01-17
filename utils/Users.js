@@ -2,20 +2,32 @@ const redis = require("redis");
 const client = redis.createClient();
 
 // Add a user by socket id in hset
-function addUser(id, username, room, pokemon, pokemonHP) {
+function addUser(user) {
   return new Promise((resolve, reject) => {
     client.hmset(
-      id,
+      user.id,
       "username",
-      username,
+      user.username,
       "room",
-      room,
+      user.room,
       "id",
-      id,
+      user.id,
       "pokemon",
-      pokemon,
+      user.pokemon,
       "pokemonHP",
-      String(pokemonHP),
+      String(user.pokemonHP),
+      "Attack",
+      user.attack,
+      "Defence",
+      user.defence,
+      "Speed",
+      user.speed,
+      "Sp_Attack",
+      user.sp_attack,
+      "Sp_Defence",
+      user.sp_defence,
+      "canAttack",
+      "false",
       function(err, res) {
         if (err) {
           return reject(err);
@@ -96,6 +108,33 @@ function getUser(id) {
   });
 }
 
+function updateUserAttribute(id, key, value) {
+  id = String(id);
+  key = String(key);
+  value = String(value);
+  return new Promise((resolve, reject) => {
+    client.hset(id, key, value, function(err, res) {
+      if (err) {
+        return reject(err);
+      }
+      resolve(res);
+    });
+  });
+}
+
+function updateUser(id, obj) {
+  return new Promise((resolve, reject) => {
+    const promiseArr = Object.keys(obj).map(key => {
+      return updateUserAttribute(id, key, obj[key]);
+    });
+    Promise.all(promiseArr)
+      .then(res => {
+        resolve(res);
+      })
+      .catch(err => reject(err));
+  });
+}
+
 module.exports = {
   addUser,
   deleteKey,
@@ -103,5 +142,6 @@ module.exports = {
   addUserInRoom,
   getUsersByRoom,
   getUser,
-  countUsers
+  countUsers,
+  updateUser
 };

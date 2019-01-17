@@ -72,6 +72,7 @@ class Playground extends Component {
           <Player
             username={this.props.plUsername}
             pokemon={this.state.plPokemonObj}
+            stats={this.props.plStats}
           />
         </div>
         <div className="box">
@@ -81,6 +82,7 @@ class Playground extends Component {
           <AttackControl
             moves={this.state.moves}
             handleAttack={this.handleAttack}
+            canAttack={this.props.canAttack}
           />
           <div className="continue">
             <button>Continue</button>

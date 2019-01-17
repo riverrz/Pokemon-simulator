@@ -5,8 +5,8 @@ const http = require("http");
 const path = require("path");
 const app = express();
 
-const Pokemons = require("./data/pokedex/pokemon.json");
-const Moves = require("./data/pokedex/moves.json");
+const pokemonRoutes = require("./routes/pokemonRoutes");
+const movesRoutes = require("./routes/movesRoutes");
 
 app.use(express.static(path.join(__dirname, "./data/pokedex")));
 
@@ -25,17 +25,36 @@ io.on("connection", socket => {
       if (usersInRoom >= 2) {
         socket.emit("exception", "Room is full");
       } else {
-        await Users.addUser(
-          socket.id,
-          data.username,
-          data.room,
-          data.pokemon,
-          data.pokemonHP
-        ); // shouldnt be able to add user by same username
+        await Users.addUser({
+          id: socket.id,
+          username: data.username,
+          room: data.room,
+          pokemon: data.pokemon,
+          pokemonHP: data.pokemonHP,
+          attack: data.attack,
+          defence: data.defence,
+          sp_attack: data.sp_attack,
+          sp_defence: data.sp_defence,
+          speed: data.speed
+        }); // shouldnt be able to add user by same username
         await Users.addUserInRoom(data.room, socket.id);
         socket.join(data.room);
         const playerList = await Users.getUsersByRoom(data.room);
+
         if (playerList.length === 2) {
+          // Convert canAttack from string to boolean
+          playerList[0].canAttack = JSON.parse(playerList[0].canAttack);
+          playerList[1].canAttack = JSON.parse(playerList[1].canAttack);
+
+          // Set a player's canAttack to true randomly
+          const chosenIndex = Math.floor(Math.random() * 2);
+          playerList[chosenIndex].canAttack = true;
+
+          // Update canAttack value of the chosenUser
+          await Users.updateUser(playerList[chosenIndex].id, {
+            canAttack: true
+          });
+
           io.to(data.room).emit("opponentJoined", playerList);
         }
       }
@@ -49,23 +68,48 @@ io.on("connection", socket => {
     // Call attack function in attack.js to handle the attack
     // Emit a new event to update the HP and handle it in Playground.js
     const user = await Users.getUser(socket.id);
+    const playerList = await Users.getUsersByRoom(user.room);
+    const opponent = playerList.filter(
+      player => player.username !== user.username
+    )[0];
+    // Check if user can attack
+    if (!JSON.parse(user.canAttack)) {
+      return;
+    }
     attack(
-      socket.id,
+      user.id,
       data.hp,
       data.targetName,
       data.attackerName,
       data.attackName
     )
-      .then(newHP => {
+      .then(async newHP => {
         if (newHP) {
+          // change the canAttack attribute of the attacker to false, and opponent's to true
+          await Users.updateUser(user.id, {
+            canAttack: false
+          });
+          await Users.updateUser(opponent.id, {
+            canAttack: true
+          });
+
+          // emit canAttackChanged event
+          socket.broadcast.to(user.room).emit("canAttackChanged", true);
+          socket.emit("canAttackChanged", false);
+
           // emit hp updation events , one to player and one to opponent
-          // can be better ?
           socket.broadcast.to(user.room).emit("playerHPUpdate", {
             newHP
           });
+
           socket.emit("opponentHPUpdate", {
             newHP
           });
+        } else {
+          if (user && user.room) {
+            await Users.deleteRoom(user.room);
+            io.to(user.room).emit("gameover", user.username);
+          }
         }
       })
       .catch(err => {
@@ -82,16 +126,8 @@ io.on("connection", socket => {
 });
 
 // REST routes
-app.get("/pokemon/names", (req, res) => {
-  res.json(Pokemons.map(pokemon => pokemon.name));
-});
-app.get("/pokemons/:name", (req, res) => {
-  res.json(Pokemons.filter(pokemon => pokemon.name === req.params.name)[0]);
-});
-app.get("/moves/:id", (req, res) => {
-  const move = Moves.filter(move => move.id === Number(req.params.id))[0];
-  res.json(move);
-});
+app.use("/pokemons", pokemonRoutes);
+app.use("/moves", movesRoutes);
 
 server.listen(PORT, () => {
   console.log("Server has started");

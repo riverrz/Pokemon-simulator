@@ -17,35 +17,84 @@ class App extends Component {
       errorMessage: "",
       plPokemon: "",
       opPokemon: "",
-      resultMessage: ""
+      resultMessage: "",
+      plStats: {},
+      canAttack: false
     };
     this.socket = socketIOClient(this.state.endPoint);
   }
 
   componentDidMount() {
+    // Connection Event
     this.socket.on("connect", () => {
       console.log("Connected to the server");
     });
+
+    // Disconnection Event
     this.socket.on("disconnect", () => {
       console.log("Connection to the server lost!");
     });
-    this.socket.on("opponentJoined", data => {
-      const opponent = data.filter(
+
+    // Opponent Joined Event
+    this.socket.on("opponentJoined", playerList => {
+      const opponent = playerList.filter(
         user => user.username !== this.state.plUsername
       )[0];
-      console.log(opponent);
-
+      const player = playerList.filter(
+        user => user.username === this.state.plUsername
+      )[0];
+      const plStats = {
+        attack: player.Attack,
+        defence: player.Defence,
+        speed: player.Speed,
+        sp_attack: player.Sp_Attack,
+        sp_defence: player.Sp_Defence
+      };
       this.setState({
         opUsername: opponent.username,
-        opPokemon: opponent.pokemon
+        opPokemon: opponent.pokemon,
+        plStats,
+        canAttack: player.canAttack
       });
     });
+
+    // Opponent Left Event
     this.socket.on("opponentLeft", () => {
+      if (this.state.start) {
+        this.setState({
+          start: false,
+          resultMessage: "You won! opponent left the match"
+        });
+      }
+    });
+
+    // canAttackChanged Event
+    this.socket.on("canAttackChanged", canAttack => {
+      this.setState({
+        canAttack
+      });
+    });
+
+    // Gameover event
+    this.socket.on("gameover", winner => {
+      let resultMessage;
+      if (this.state.plUsername === winner) {
+        resultMessage = "Game Over! You won the match";
+      } else if (this.state.opUsername === winner) {
+        resultMessage = "Game Over! Sorry you lost the match";
+      } else {
+        return this.setState({
+          error: true,
+          errorMessage: "Some error occurred in determining the winner"
+        });
+      }
       this.setState({
         start: false,
-        resultMessage: "You won! opponent left the match"
+        resultMessage
       });
     });
+
+    // Exception Occurred Event
     this.socket.on("exception", errorMessage => {
       this.setState({
         error: true,
@@ -78,7 +127,12 @@ class App extends Component {
           username: this.state.plUsername,
           room: this.state.room,
           pokemon: this.state.plPokemon,
-          pokemonHP: pokemonObj.base.HP
+          pokemonHP: pokemonObj.base.HP,
+          attack: pokemonObj.base.Attack,
+          defence: pokemonObj.base.Defence,
+          speed: pokemonObj.base.Speed,
+          sp_attack: pokemonObj.base.Sp_Attack,
+          sp_defence: pokemonObj.base.Sp_Defence
         });
         this.setState({
           start: true
@@ -103,7 +157,9 @@ class App extends Component {
           opUsername={this.state.opUsername}
           plPokemon={this.state.plPokemon}
           opPokemon={this.state.opPokemon}
+          plStats={this.state.plStats}
           socket={this.socket}
+          canAttack={this.state.canAttack}
         />
       );
     } else if (this.state.start && !this.state.opUsername) {

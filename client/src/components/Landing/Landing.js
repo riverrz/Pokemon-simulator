@@ -5,7 +5,7 @@ class Landing extends Component {
     pokemonNames: []
   };
   componentDidMount() {
-    fetch("/pokemon/names")
+    fetch("/pokemons/names")
       .then(res => res.json())
       .then(pokemonNames => {
         this.setState({
