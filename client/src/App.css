@@ -1,1 +1,10 @@
-
+.App__container {
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+}
+.App__message {
+  color: #eee;
+  font-size: 2rem;
+  text-align: center;
+}

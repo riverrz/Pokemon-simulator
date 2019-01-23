@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import socketIOClient from "socket.io-client";
 import Playground from "./containers/Playground/Playground";
 import Landing from "./components/Landing/Landing";
+import BodyMovin from "./components/BodyMovin/BodyMovin";
+import WorldAnimation from "./assets/Animations/world_locations.json";
+import LooserAnimation from "./assets/Animations/looser.json";
+import TrophyAnimation from "./assets/Animations/trophy.json";
 import "./App.css";
 
 class App extends Component {
@@ -17,6 +21,7 @@ class App extends Component {
       errorMessage: "",
       plPokemon: "",
       opPokemon: "",
+      winner: "",
       resultMessage: "",
       plStats: {},
       canAttack: false
@@ -63,7 +68,8 @@ class App extends Component {
       if (this.state.start) {
         this.setState({
           start: false,
-          resultMessage: "You won! opponent left the match"
+          resultMessage: "You won! opponent left the match",
+          winner: this.state.plUsername
         });
       }
     });
@@ -90,7 +96,8 @@ class App extends Component {
       }
       this.setState({
         start: false,
-        resultMessage
+        resultMessage,
+        winner
       });
     });
 
@@ -163,9 +170,34 @@ class App extends Component {
         />
       );
     } else if (this.state.start && !this.state.opUsername) {
-      content = <p>Waiting for a player to join the match</p>;
+      content = (
+        <div className="App__container" style={{width:"40%"}}>
+          <div className="App__message">Waiting for opponent to join....</div>
+          <BodyMovin animationData={WorldAnimation}/>
+        </div>
+      );
     } else if (!this.state.start && this.state.resultMessage) {
-      content = <p>{this.state.resultMessage}</p>;
+      if (this.state.winner === this.state.plUsername) {
+        content = (
+          <div className="App__container">
+            <div className="App__message">{this.state.resultMessage}</div>
+            <BodyMovin
+              animationData={TrophyAnimation}
+              style={{ width: "100%" }}
+            />
+          </div>
+        );
+      } else {
+        content = (
+          <div className="App__container">
+            <div className="App__message">{this.state.resultMessage}</div>
+            <BodyMovin
+              animationData={LooserAnimation}
+              style={{ width: "100%" }}
+            />
+          </div>
+        );
+      }
     }
     return content;
   }
