@@ -5,7 +5,7 @@ import Landing from "./components/Landing/Landing";
 import BodyMovin from "./components/BodyMovin/BodyMovin";
 import WorldAnimation from "./assets/Animations/world_locations.json";
 import LooserAnimation from "./assets/Animations/looser.json";
-import TrophyAnimation from "./assets/Animations/trophy.json";
+import WinnerAnimation from "./assets/Animations/winner.json";
 import "./App.css";
 
 class App extends Component {
@@ -182,7 +182,7 @@ class App extends Component {
           <div className="App__container">
             <div className="App__message">{this.state.resultMessage}</div>
             <BodyMovin
-              animationData={TrophyAnimation}
+              animationData={WinnerAnimation}
               style={{ width: "100%" }}
             />
           </div>

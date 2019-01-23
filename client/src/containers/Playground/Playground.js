@@ -74,7 +74,6 @@ class Playground extends Component {
             pokemon={this.state.plPokemonObj}
             stats={this.props.plStats}
           />
-        </div>
         <div className="box">
           <div id="message" className="message">
             What should {this.props.plPokemon.toUpperCase()} do?
@@ -87,6 +86,7 @@ class Playground extends Component {
           <div className="continue">
             <button>Continue</button>
           </div>
+        </div>
         </div>
       </Fragment>
     );
