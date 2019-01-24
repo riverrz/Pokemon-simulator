@@ -9,7 +9,7 @@
     "dev": "concurrently \"npm run server\"  \"npm run client\""
   },
   "engines": {
-    "node": "9.8.0"
+    "node": "10.15.0"
   },
   "repository": {
     "type": "git",
